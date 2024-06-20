@@ -2,8 +2,6 @@ module github.com/bayashi/qq
 
 go 1.21
 
-toolchain go1.21.10
-
 require github.com/bayashi/actually v0.28.0
 
 require (
