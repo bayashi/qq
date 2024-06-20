@@ -39,6 +39,7 @@ The 403 (Forbidden) status code indicates that the server understood the request
 $ qq mimetype json
 json application/json
 
+$ qq jsonrpc -32700
 -32700 Parse error
 Invalid JSON was received by the server. An error occurred on the server while parsing the JSON text.
 ```
