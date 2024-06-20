@@ -1,3 +1,3 @@
-module github.com/bayashi/stcs
+module github.com/bayashi/qq
 
 go 1.21
