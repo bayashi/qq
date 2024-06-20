@@ -8,11 +8,6 @@ import (
 	a "github.com/bayashi/actually"
 )
 
-var (
-	stubCalled bool
-	stubCode   ExitCode
-)
-
 func TestAllList(t *testing.T) {
 	var o bytes.Buffer
 	cli := &runner{
