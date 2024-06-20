@@ -16,7 +16,7 @@ var (
 func TestAllList(t *testing.T) {
 	var o bytes.Buffer
 	cli := &runner{
-		out:   &o,
+		out:  &o,
 		args: []string{"grpc"},
 	}
 	ret, msg := cli.run()
@@ -48,7 +48,7 @@ func TestAllList(t *testing.T) {
 func TestDetaili(t *testing.T) {
 	var o bytes.Buffer
 	cli := &runner{
-		out:   &o,
+		out:  &o,
 		args: []string{"grpc", "4"},
 	}
 	ret, msg := cli.run()
@@ -66,7 +66,7 @@ func TestDetaili(t *testing.T) {
 func TestDetails(t *testing.T) {
 	var o bytes.Buffer
 	cli := &runner{
-		out:   &o,
+		out:  &o,
 		args: []string{"mimetype", "json"},
 	}
 	ret, msg := cli.run()
@@ -83,7 +83,7 @@ func TestDetails(t *testing.T) {
 func TestSearch(t *testing.T) {
 	var o bytes.Buffer
 	cli := &runner{
-		out:   &o,
+		out:  &o,
 		args: []string{"grpc", "dead"},
 	}
 	ret, msg := cli.run()

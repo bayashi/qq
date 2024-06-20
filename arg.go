@@ -51,7 +51,7 @@ func (cli *runner) parseArgs() (string, string) {
 	if len(cli.args) == 0 {
 		cli.putUsage()
 		funcExit(EXIT_OK)
-	}else if cli.hasHelpOption() {
+	} else if cli.hasHelpOption() {
 		cli.putErr(fmt.Sprintf("Version %s", getVersion()))
 		cli.putUsage()
 		funcExit(EXIT_OK)

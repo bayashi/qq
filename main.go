@@ -28,15 +28,15 @@ var funcExit = func(code ExitCode) {
 }
 
 type runner struct {
-	out      io.Writer
-	err      io.Writer
-	args     []string
+	out  io.Writer
+	err  io.Writer
+	args []string
 }
 
 func main() {
 	cli := &runner{
-		out:   os.Stdout,
-		err:   os.Stderr,
+		out:  os.Stdout,
+		err:  os.Stderr,
 		args: os.Args[1:],
 	}
 	exitCode, message := cli.run()
