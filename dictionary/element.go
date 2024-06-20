@@ -1,6 +1,6 @@
 package dictionary
 
 type Element struct {
-	Subject string
+	Subject     string
 	Description string
 }
