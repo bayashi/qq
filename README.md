@@ -1,6 +1,6 @@
 # qq
 
-References of Quick Questions
+Quick Questions and answers
 
 <a href="https://github.com/bayashi/qq/actions" title="qq CI"><img src="https://github.com/bayashi/qq/workflows/main/badge.svg" alt="qq CI"></a>
 <a href="https://goreportcard.com/report/github.com/bayashi/qq" title="qq report card" target="_blank"><img src="https://goreportcard.com/badge/github.com/bayashi/qq" alt="qq report card"></a>
