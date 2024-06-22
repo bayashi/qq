@@ -1,6 +1,6 @@
 package dictionary
 
 type Element struct {
-	Subject     string
-	Description string
+	Subject     string `yaml:"subject"`
+	Description string `yaml:"description"`
 }

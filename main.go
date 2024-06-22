@@ -4,9 +4,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/adrg/xdg"
+	yaml "gopkg.in/yaml.v3"
 
 	"github.com/bayashi/qq/dictionary"
 
@@ -74,7 +78,11 @@ func (cli *runner) handle(kind string, target string) error {
 		sMap = mimetype.GetRef()
 		typ = "string"
 	default:
-		return fmt.Errorf("wrong sub command `%s`, see --help", kind)
+		var err error
+		typ, err = cli.loadCustomDictionary(kind, &iMap, &sMap)
+		if err != nil {
+			return err
+		}
 	}
 
 	if target == "" {
@@ -192,4 +200,37 @@ func sortedStringKeys(m map[string]dictionary.Element) []string {
 	sort.Strings(keys)
 
 	return keys
+}
+
+var customDicPathFuc = func(kind string) string {
+	return filepath.Join(xdg.ConfigHome, cmdName, fmt.Sprintf("%s.yaml", kind))
+}
+
+func (cli *runner) loadCustomDictionary(
+	kind string,
+	iMap *map[int]dictionary.Element,
+	sMap *map[string]dictionary.Element,
+) (string, error) {
+	customDicPath := customDicPathFuc(kind)
+	if _, err := os.Stat(customDicPath); err != nil {
+		return "", fmt.Errorf("wrong sub command `%s`. Perhaps, you have custom YAML? It should be located on `%s`", kind, customDicPath)
+	}
+
+	bytes, err := os.ReadFile(customDicPath)
+	if err != nil {
+		return "", err
+	}
+
+	typ := "int"
+	if bytes[2] == 0x69 { // 0x69:"i"
+		err = yaml.Unmarshal(bytes, iMap)
+	} else {
+		err = yaml.Unmarshal(bytes, sMap)
+		typ = "string"
+	}
+	if err != nil {
+		return "", err
+	}
+
+	return typ, nil
 }

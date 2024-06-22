@@ -62,6 +62,30 @@ $ qq http 30
 308 Permanent Redirect
 ```
 
+## Custom Dictionary
+
+You can put your custom dictionary in [XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
+
+Example: `err.yaml`
+
+```yaml
+# int
+100:
+  subject: "No Impact Error"
+  description: "No Impact Error description"
+101:
+  subject: "Really Fatal Error"
+  description: "Really Fatal Error description"
+```
+
+The first line of YAML file **MUST** be a comment as `# int` or `# string` depends on your dictionary key type.
+
+```
+$ qq err 101
+101 Really Fatal Error
+Really Fatal Error description
+```
+
 ## Installation
 
 There are several ways to install `qq`:

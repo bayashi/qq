@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"testing"
 
 	here "github.com/MakeNowJust/heredoc/v2"
@@ -86,5 +87,25 @@ func TestSearch(t *testing.T) {
 	a.Got(msg).Expect("").Same(t)
 
 	expect := " 4 DeadlineExceeded\n"
+	a.Got(o.String()).Expect(expect).Same(t)
+}
+
+func TestCustomDictionary(t *testing.T) {
+	customSubcmd := "foo"
+	customDicPathFuc = func(_ string) string {
+		return fmt.Sprintf("testdata/%s.yaml", customSubcmd)
+	}
+
+	var o bytes.Buffer
+	cli := &runner{
+		out:  &o,
+		args: []string{"foo", "101"},
+	}
+
+	ret, msg := cli.run()
+	a.Got(ret).Expect(EXIT_OK).Same(t)
+	a.Got(msg).Expect("").Same(t)
+
+	expect := "101 bar\nbaz\n"
 	a.Got(o.String()).Expect(expect).Same(t)
 }
