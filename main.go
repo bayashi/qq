@@ -57,12 +57,12 @@ func (cli *runner) run() (ExitCode, string) {
 	return EXIT_OK, ""
 }
 
-func (cli *runner) handle(stKind string, target string) error {
+func (cli *runner) handle(kind string, target string) error {
 	var iMap map[int]dictionary.Element
 	var sMap map[string]dictionary.Element
 	typ := "int"
 	asc := true
-	switch stKind {
+	switch kind {
 	case "grpc":
 		iMap = grpc.GetRef()
 	case "http", "https":
@@ -74,7 +74,7 @@ func (cli *runner) handle(stKind string, target string) error {
 		sMap = mimetype.GetRef()
 		typ = "string"
 	default:
-		return fmt.Errorf("wrong sub command `%s`, see --help", stKind)
+		return fmt.Errorf("wrong sub command `%s`, see --help", kind)
 	}
 
 	if target == "" {
