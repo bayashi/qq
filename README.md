@@ -62,6 +62,10 @@ $ qq http 30
 308 Permanent Redirect
 ```
 
+### Turn off highlighter
+
+By default, `qq` highlights matched words for TTY. If you'd like to turn it off, set ENV:`NO_COLOR`.
+
 ## Custom Dictionary
 
 You can put your custom dictionary in [XDG Base Directory](https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html).
