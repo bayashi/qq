@@ -14,10 +14,10 @@ import (
 
 	"github.com/bayashi/qq/dictionary"
 
-	"github.com/bayashi/qq/grpc"
-	"github.com/bayashi/qq/http"
-	"github.com/bayashi/qq/jsonrpc"
-	"github.com/bayashi/qq/mimetype"
+	"github.com/bayashi/qq/resources/grpc"
+	"github.com/bayashi/qq/resources/http"
+	"github.com/bayashi/qq/resources/jsonrpc"
+	"github.com/bayashi/qq/resources/mimetype"
 )
 
 type ExitCode int
