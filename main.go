@@ -5,11 +5,14 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/adrg/xdg"
+	"github.com/bayashi/colorpalette"
+	"github.com/mattn/go-isatty"
 	yaml "gopkg.in/yaml.v3"
 
 	"github.com/bayashi/qq/dictionary"
@@ -32,16 +35,20 @@ var funcExit = func(code ExitCode) {
 }
 
 type runner struct {
-	out  io.Writer
-	err  io.Writer
-	args []string
+	isTTY   bool
+	out     io.Writer
+	err     io.Writer
+	args    []string
+	noColor bool // env:NO_COLOR
 }
 
 func main() {
 	cli := &runner{
-		out:  os.Stdout,
-		err:  os.Stderr,
-		args: os.Args[1:],
+		isTTY:   isTTY(),
+		out:     os.Stdout,
+		err:     os.Stderr,
+		args:    os.Args[1:],
+		noColor: os.Getenv("NO_COLOR") != "",
 	}
 	exitCode, message := cli.run()
 
@@ -59,6 +66,11 @@ func (cli *runner) run() (ExitCode, string) {
 	}
 
 	return EXIT_OK, ""
+}
+
+func isTTY() bool {
+	fd := os.Stdout.Fd()
+	return isatty.IsTerminal(fd) || isatty.IsCygwinTerminal(fd)
 }
 
 func (cli *runner) handle(kind string, target string) error {
@@ -120,15 +132,28 @@ func (cli *runner) allStringMap(m map[string]dictionary.Element) error {
 	return nil
 }
 
+var HIGHLIGHTER = colorpalette.Get("bg_red")
+
+func (cli *runner) replacer(re *regexp.Regexp, src string) string {
+	if !cli.isTTY || cli.noColor {
+		return src
+	}
+	return string(re.ReplaceAll([]byte(src), []byte(HIGHLIGHTER.Sprint("$1"))))
+}
+
 func (cli *runner) searchInt(m map[int]dictionary.Element, target string, asc bool) error {
 	found := false
 	targeti, err := strconv.Atoi(target)
 	if err != nil {
+		var re *regexp.Regexp
 		keys := sortedIntKeys(m, asc)
 		for _, k := range keys {
 			dic := m[k]
 			if strings.Contains(strings.ToLower(dic.Subject), strings.ToLower(target)) {
-				fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
+				if re == nil && cli.isTTY {
+					re = regexp.MustCompile(fmt.Sprintf("(?i)(%s)", regexp.QuoteMeta(target)))
+				}
+				fmt.Fprintf(cli.out, "%2d %s\n", k, cli.replacer(re, dic.Subject))
 				found = true
 			}
 		}
@@ -139,8 +164,10 @@ func (cli *runner) searchInt(m map[int]dictionary.Element, target string, asc bo
 		keys := sortedIntKeys(m, asc)
 		for _, k := range keys {
 			dic := m[k]
-			if strings.Contains(fmt.Sprintf("%d", k), target) {
-				fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
+			kk := fmt.Sprintf("%d", k)
+			if strings.Contains(kk, target) {
+				kk = strings.ReplaceAll(kk, target, HIGHLIGHTER.Sprint(target))
+				fmt.Fprintf(cli.out, "%2s %s\n", kk, dic.Subject)
 				found = true
 			}
 		}
@@ -159,12 +186,16 @@ func (cli *runner) searchString(m map[string]dictionary.Element, target string) 
 		fmt.Fprintf(cli.out, "%s %s\n%s\n", target, dic.Subject, dic.Description)
 		found = true
 	} else {
+		var re *regexp.Regexp
 		keys := sortedStringKeys(m)
 		for _, k := range keys {
 			dic := m[k]
 			if strings.Contains(strings.ToLower(k), strings.ToLower(target)) ||
 				strings.Contains(strings.ToLower(dic.Subject), strings.ToLower(target)) {
-				fmt.Fprintf(cli.out, "%s %s\n", k, dic.Subject)
+				if re == nil && cli.isTTY {
+					re = regexp.MustCompile(fmt.Sprintf("(?i)(%s)", regexp.QuoteMeta(target)))
+				}
+				fmt.Fprintf(cli.out, "%s %s\n", cli.replacer(re, k), cli.replacer(re, dic.Subject))
 				found = true
 			}
 		}
