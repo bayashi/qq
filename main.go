@@ -4,9 +4,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/adrg/xdg"
+	yaml "gopkg.in/yaml.v3"
 
 	"github.com/bayashi/qq/dictionary"
 
@@ -57,12 +61,12 @@ func (cli *runner) run() (ExitCode, string) {
 	return EXIT_OK, ""
 }
 
-func (cli *runner) handle(stKind string, target string) error {
+func (cli *runner) handle(kind string, target string) error {
 	var iMap map[int]dictionary.Element
 	var sMap map[string]dictionary.Element
 	typ := "int"
 	asc := true
-	switch stKind {
+	switch kind {
 	case "grpc":
 		iMap = grpc.GetRef()
 	case "http", "https":
@@ -74,7 +78,11 @@ func (cli *runner) handle(stKind string, target string) error {
 		sMap = mimetype.GetRef()
 		typ = "string"
 	default:
-		return fmt.Errorf("wrong sub command `%s`, see --help", stKind)
+		var err error
+		typ, err = cli.loadCustomDictionary(kind, &iMap, &sMap)
+		if err != nil {
+			return err
+		}
 	}
 
 	if target == "" {
@@ -94,9 +102,9 @@ func (cli *runner) handle(stKind string, target string) error {
 
 func (cli *runner) allIntMap(m map[int]dictionary.Element, asc bool) error {
 	keys := sortedIntKeys(m, asc)
-	for _, st := range keys {
-		dic := m[st]
-		fmt.Fprintf(cli.out, "%2d %s\n", st, dic.Subject)
+	for _, k := range keys {
+		dic := m[k]
+		fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
 	}
 
 	return nil
@@ -104,9 +112,9 @@ func (cli *runner) allIntMap(m map[int]dictionary.Element, asc bool) error {
 
 func (cli *runner) allStringMap(m map[string]dictionary.Element) error {
 	keys := sortedStringKeys(m)
-	for _, st := range keys {
-		dic := m[st]
-		fmt.Fprintf(cli.out, "%s %s\n", st, dic.Subject)
+	for _, k := range keys {
+		dic := m[k]
+		fmt.Fprintf(cli.out, "%s %s\n", k, dic.Subject)
 	}
 
 	return nil
@@ -117,10 +125,10 @@ func (cli *runner) searchInt(m map[int]dictionary.Element, target string, asc bo
 	targeti, err := strconv.Atoi(target)
 	if err != nil {
 		keys := sortedIntKeys(m, asc)
-		for _, st := range keys {
-			dic := m[st]
+		for _, k := range keys {
+			dic := m[k]
 			if strings.Contains(strings.ToLower(dic.Subject), strings.ToLower(target)) {
-				fmt.Fprintf(cli.out, "%2d %s\n", st, dic.Subject)
+				fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
 				found = true
 			}
 		}
@@ -129,10 +137,10 @@ func (cli *runner) searchInt(m map[int]dictionary.Element, target string, asc bo
 		found = true
 	} else {
 		keys := sortedIntKeys(m, asc)
-		for _, st := range keys {
-			dic := m[st]
-			if strings.Contains(fmt.Sprintf("%d", st), target) {
-				fmt.Fprintf(cli.out, "%2d %s\n", st, dic.Subject)
+		for _, k := range keys {
+			dic := m[k]
+			if strings.Contains(fmt.Sprintf("%d", k), target) {
+				fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
 				found = true
 			}
 		}
@@ -152,11 +160,11 @@ func (cli *runner) searchString(m map[string]dictionary.Element, target string) 
 		found = true
 	} else {
 		keys := sortedStringKeys(m)
-		for _, st := range keys {
-			dic := m[st]
-			if strings.Contains(strings.ToLower(st), strings.ToLower(target)) ||
+		for _, k := range keys {
+			dic := m[k]
+			if strings.Contains(strings.ToLower(k), strings.ToLower(target)) ||
 				strings.Contains(strings.ToLower(dic.Subject), strings.ToLower(target)) {
-				fmt.Fprintf(cli.out, "%s %s\n", st, dic.Subject)
+				fmt.Fprintf(cli.out, "%s %s\n", k, dic.Subject)
 				found = true
 			}
 		}
@@ -192,4 +200,37 @@ func sortedStringKeys(m map[string]dictionary.Element) []string {
 	sort.Strings(keys)
 
 	return keys
+}
+
+var customDicPathFuc = func(kind string) string {
+	return filepath.Join(xdg.ConfigHome, cmdName, fmt.Sprintf("%s.yaml", kind))
+}
+
+func (cli *runner) loadCustomDictionary(
+	kind string,
+	iMap *map[int]dictionary.Element,
+	sMap *map[string]dictionary.Element,
+) (string, error) {
+	customDicPath := customDicPathFuc(kind)
+	if _, err := os.Stat(customDicPath); err != nil {
+		return "", fmt.Errorf("wrong sub command `%s`. Perhaps, you have custom YAML? It should be located on `%s`", kind, customDicPath)
+	}
+
+	bytes, err := os.ReadFile(customDicPath)
+	if err != nil {
+		return "", err
+	}
+
+	typ := "int"
+	if bytes[2] == 0x69 { // 0x69:"i"
+		err = yaml.Unmarshal(bytes, iMap)
+	} else {
+		err = yaml.Unmarshal(bytes, sMap)
+		typ = "string"
+	}
+	if err != nil {
+		return "", err
+	}
+
+	return typ, nil
 }
