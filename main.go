@@ -94,9 +94,9 @@ func (cli *runner) handle(kind string, target string) error {
 
 func (cli *runner) allIntMap(m map[int]dictionary.Element, asc bool) error {
 	keys := sortedIntKeys(m, asc)
-	for _, st := range keys {
-		dic := m[st]
-		fmt.Fprintf(cli.out, "%2d %s\n", st, dic.Subject)
+	for _, k := range keys {
+		dic := m[k]
+		fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
 	}
 
 	return nil
@@ -104,9 +104,9 @@ func (cli *runner) allIntMap(m map[int]dictionary.Element, asc bool) error {
 
 func (cli *runner) allStringMap(m map[string]dictionary.Element) error {
 	keys := sortedStringKeys(m)
-	for _, st := range keys {
-		dic := m[st]
-		fmt.Fprintf(cli.out, "%s %s\n", st, dic.Subject)
+	for _, k := range keys {
+		dic := m[k]
+		fmt.Fprintf(cli.out, "%s %s\n", k, dic.Subject)
 	}
 
 	return nil
@@ -117,10 +117,10 @@ func (cli *runner) searchInt(m map[int]dictionary.Element, target string, asc bo
 	targeti, err := strconv.Atoi(target)
 	if err != nil {
 		keys := sortedIntKeys(m, asc)
-		for _, st := range keys {
-			dic := m[st]
+		for _, k := range keys {
+			dic := m[k]
 			if strings.Contains(strings.ToLower(dic.Subject), strings.ToLower(target)) {
-				fmt.Fprintf(cli.out, "%2d %s\n", st, dic.Subject)
+				fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
 				found = true
 			}
 		}
@@ -129,10 +129,10 @@ func (cli *runner) searchInt(m map[int]dictionary.Element, target string, asc bo
 		found = true
 	} else {
 		keys := sortedIntKeys(m, asc)
-		for _, st := range keys {
-			dic := m[st]
-			if strings.Contains(fmt.Sprintf("%d", st), target) {
-				fmt.Fprintf(cli.out, "%2d %s\n", st, dic.Subject)
+		for _, k := range keys {
+			dic := m[k]
+			if strings.Contains(fmt.Sprintf("%d", k), target) {
+				fmt.Fprintf(cli.out, "%2d %s\n", k, dic.Subject)
 				found = true
 			}
 		}
@@ -152,11 +152,11 @@ func (cli *runner) searchString(m map[string]dictionary.Element, target string) 
 		found = true
 	} else {
 		keys := sortedStringKeys(m)
-		for _, st := range keys {
-			dic := m[st]
-			if strings.Contains(strings.ToLower(st), strings.ToLower(target)) ||
+		for _, k := range keys {
+			dic := m[k]
+			if strings.Contains(strings.ToLower(k), strings.ToLower(target)) ||
 				strings.Contains(strings.ToLower(dic.Subject), strings.ToLower(target)) {
-				fmt.Fprintf(cli.out, "%s %s\n", st, dic.Subject)
+				fmt.Fprintf(cli.out, "%s %s\n", k, dic.Subject)
 				found = true
 			}
 		}
