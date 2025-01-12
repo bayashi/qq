@@ -2,12 +2,10 @@ github.com/MakeNowJust/heredoc/v2 v2.0.1 h1:rlCHh70XXXv7toz95ajQWOWQnN4WNLt0TdpZ
 github.com/MakeNowJust/heredoc/v2 v2.0.1/go.mod h1:6/2Abh5s+hc3g9nbWLe9ObDIOhaRrqsyY9MWy+4JdRM=
 github.com/adrg/xdg v0.5.0 h1:dDaZvhMXatArP1NPHhnfaQUqWBLBsmx1h1HXQdMoFCY=
 github.com/adrg/xdg v0.5.0/go.mod h1:dDdY4M4DF9Rjy4kHPeNL+ilVF+p2lK8IdM9/rTSGcI4=
-github.com/bayashi/actually v0.28.0 h1:53I+AxD8xq9Cm2ubTZo+3PQ2SGzxgz/YMyC4FZ2wbPU=
-github.com/bayashi/actually v0.28.0/go.mod h1:KMJ0YCpdUDKaxdjpfiRg64WpPBrjTxCL3y57xQGPYjY=
+github.com/bayashi/actually v0.31.0 h1:gZOETmhl5lhmKOP/tnp2FZp05fIn//U+wzhFazl7nrQ=
+github.com/bayashi/actually v0.31.0/go.mod h1:COiU5S5xYyDhYbEs/OVYdmMN7TWIltoKK51PhAHWHvk=
 github.com/bayashi/colorpalette v0.0.4 h1:1D7+bs/1fIPDv782zZKHwDtCgOT6qCKHN9t9IOrqIHM=
 github.com/bayashi/colorpalette v0.0.4/go.mod h1:VvoV9APBY4B4EkJBFMO9gZa0lsTrKvTe3jYWEXhpU+I=
-github.com/bayashi/witness v0.0.20 h1:4SOvdrf7L6dPN8ldy2wet9tFHRimBuVOdd1vRhOGoFI=
-github.com/bayashi/witness v0.0.20/go.mod h1:xxXU08y35qzkp0kDRGVYuvHB5JVxFKe6vF16puu7gEo=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fatih/color v1.18.0 h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
@@ -23,6 +21,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+github.com/yassinebenaid/godump v0.11.1 h1:SPujx/XaYqGDfmNh7JI3dOyCUVrG0bG2duhO3Eh2EhI=
+github.com/yassinebenaid/godump v0.11.1/go.mod h1:dc/0w8wmg6kVIvNGAzbKH1Oa54dXQx8SNKh4dPRyW44=
 golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.25.0 h1:r+8e+loiHxRqhXVl6ML1nO3l1+oFoWbnlu2Ehimmi34=
