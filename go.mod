@@ -3,7 +3,7 @@ module github.com/bayashi/qq
 go 1.21.11
 
 require (
-	github.com/bayashi/actually v0.31.0
+	github.com/bayashi/actually v0.33.2
 	github.com/mattn/go-isatty v0.0.20
 )
 
@@ -11,6 +11,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/yassinebenaid/godump v0.11.1 // indirect
 	golang.org/x/sys v0.25.0 // indirect
+	google.golang.org/protobuf v1.36.2 // indirect
 )
 
 require (
