@@ -3,7 +3,7 @@ module github.com/bayashi/qq
 go 1.21.11
 
 require (
-	github.com/bayashi/actually v0.33.2
+	github.com/bayashi/actually v0.34.0
 	github.com/mattn/go-isatty v0.0.20
 )
 
