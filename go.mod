@@ -5,7 +5,7 @@ go 1.21.11
 toolchain go1.24.1
 
 require (
-	github.com/bayashi/actually v0.34.2
+	github.com/bayashi/actually v0.38.0
 	github.com/mattn/go-isatty v0.0.20
 )
 
