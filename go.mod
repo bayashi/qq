@@ -1,8 +1,6 @@
 module github.com/bayashi/qq
 
-go 1.21.11
-
-toolchain go1.24.1
+go 1.25.0
 
 require (
 	github.com/bayashi/actually v0.38.0
@@ -10,9 +8,9 @@ require (
 )
 
 require (
-	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/yassinebenaid/godump v0.11.1 // indirect
-	golang.org/x/sys v0.25.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	google.golang.org/protobuf v1.36.2 // indirect
 )
 
@@ -21,7 +19,7 @@ require (
 	github.com/adrg/xdg v0.5.0
 	github.com/bayashi/colorpalette v0.0.4
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/fatih/color v1.18.0
+	github.com/fatih/color v1.19.0
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1
